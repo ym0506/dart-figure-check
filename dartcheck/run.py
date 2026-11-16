@@ -30,7 +30,9 @@ RES = ROOT / "results"
 
 
 def reports():
-    sample = json.loads((RAW / "sample.json").read_text(encoding="utf-8"))
+    # DARTCHECK_SAMPLE=holdout 이면 첫 10곳 다음 회사들(행 이름 목록을 만든 뒤 처음 보는 회사)로 돈다
+    name = os.environ.get("DARTCHECK_SAMPLE", "sample")
+    sample = json.loads((RAW / f"{name}.json").read_text(encoding="utf-8"))
     return [load_report(RAW / m["rcept_no"]) for m in sample["chosen"]]
 
 
@@ -100,12 +102,19 @@ def cmd_llm(repeat: int = 1, workers: int = int(os.environ.get("DARTCHECK_WORKER
         return {"corp": rep.corp_name, "rcept_no": rep.rcept_no, "mode": m, "rep": i,
                 "items": items, "usage": usage, "error": err}
 
-    with ThreadPoolExecutor(workers) as ex:
-        runs = list(ex.map(one, tasks))
-    p = RES / f"llm_{stamp}.json"
     from .extract import LOCAL_MODEL, MODEL
-    p.write_text(json.dumps({"model": LOCAL_MODEL or MODEL, "repeat": repeat, "runs": runs},
-                            ensure_ascii=False, indent=1), encoding="utf-8")
+    p = RES / f"llm_{stamp}.json"
+    runs = []
+
+    def save():
+        p.write_text(json.dumps({"model": LOCAL_MODEL or MODEL, "repeat": repeat, "runs": runs},
+                                ensure_ascii=False, indent=1), encoding="utf-8")
+
+    # 실행 하나가 끝날 때마다 저장한다(중간에 멈춰도 끝난 결과는 남는다)
+    with ThreadPoolExecutor(workers) as ex:
+        for r in ex.map(one, tasks):
+            runs.append(r)
+            save()
     print("저장:", p)
 
 

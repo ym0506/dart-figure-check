@@ -58,12 +58,14 @@ async def list_annual_reports(dart: DartClient) -> list:
     return out
 
 
-async def main(n: int = 10) -> None:
+async def main(n: int = 10, after: int = 0, name: str = "sample") -> None:
+    """규칙에 맞는 회사를 앞에서부터 세어 after곳은 건너뛰고 그다음 n곳을 받는다(after=10이면 첫 표본 다음 회사들)."""
     RAW.mkdir(parents=True, exist_ok=True)
     async with DartClient(api_key=dart_key()) as dart:
         reports = await list_annual_reports(dart)
         print(f"3월 유가증권 사업보고서(2025.12, 정정 제외) {len(reports)}건")
         chosen, skipped = [], []
+        passed = 0
         for d in reports:
             if len(chosen) >= n:
                 break
@@ -74,8 +76,12 @@ async def main(n: int = 10) -> None:
                 skipped.append({"corp": d.corp_name, "rcept_no": d.rcept_no,
                                 "missing": sorted(set(TARGETS) - set(gold))})
                 continue
-            # 원문 zip은 여러 파일(본문, 감사보고서 등)이라 opendart의 get_document(전부 이어 붙임) 대신
-            # 같은 클라이언트의 요청 함수로 zip을 그대로 받아 파일별로 저장한다.
+            if passed < after:
+                passed += 1
+                continue
+            # 원문 zip은 본문과 첨부(감사보고서 등) 여러 파일이다. opendart-py 0.1.0의 get_document는 파일을 전부 이어 붙인 글을
+            # 돌려줘서 파일 경계가 사라지고, zip이 아닌 응답(오류 등)이면 그 글을 그대로 돌려준다. 본문만 쓰고 오류를 가려내려고
+            # 같은 클라이언트의 내부 요청 함수(_request, 공개 API 아님)로 zip을 그대로 받는다. 버전이 바뀌면 깨질 수 있다.
             raw = await dart._request("document.xml", {"rcept_no": d.rcept_no})
             content = raw.get("content", b"")
             try:
@@ -86,8 +92,8 @@ async def main(n: int = 10) -> None:
                 continue
             folder = RAW / d.rcept_no
             folder.mkdir(exist_ok=True)
-            for name in zf.namelist():
-                (folder / name).write_bytes(zf.read(name))
+            for fname in zf.namelist():
+                (folder / fname).write_bytes(zf.read(fname))
             (folder / "gold_rows.json").write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
             meta = {"corp_name": d.corp_name, "corp_code": d.corp_code, "stock_code": d.stock_code,
                     "rcept_no": d.rcept_no, "rcept_dt": d.rcept_dt, "report_nm": d.report_nm,
@@ -95,11 +101,13 @@ async def main(n: int = 10) -> None:
             (folder / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=1), encoding="utf-8")
             chosen.append(meta)
             print(f"  고름 {len(chosen)}: {d.corp_name} {d.rcept_no} 파일 {len(zf.namelist())}개")
-        (RAW / "sample.json").write_text(json.dumps({"chosen": chosen, "skipped": skipped,
+        (RAW / f"{name}.json").write_text(json.dumps({"chosen": chosen, "skipped": skipped,
                                                      "rule": __doc__.split("표본 규칙")[1].split("내려받은")[0].strip()},
                                                     ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"고른 회사 {len(chosen)}곳, 규칙에 따라 건너뛴 회사 {len(skipped)}곳")
 
 
 if __name__ == "__main__":
-    asyncio.run(main(int(sys.argv[1]) if len(sys.argv) > 1 else 10))
+    args = sys.argv[1:]
+    asyncio.run(main(int(args[0]) if args else 10, int(args[1]) if len(args) > 1 else 0,
+                     args[2] if len(args) > 2 else "sample"))

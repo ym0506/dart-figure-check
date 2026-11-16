@@ -2,7 +2,7 @@
 
 방식 A(통째로): '1. 요약재무정보'와 '2. 연결재무제표' 섹션의 표 전부를 한 번에 주고 6개 계정 x 당기·전기 12칸을 받는다.
 방식 B(검색): '재무에 관한 사항' 전체(주석, 별도 포함)를 행 단위로 쪼개 BM25 상위 5행만 주고 계정마다 따로 묻는다.
-키는 ~/.config/kic-hanbaguni/.env 의 ANTHROPIC_API_KEY 에서 읽고 출력하지 않는다. 호출마다 토큰과 시간만 기록한다.
+키는 환경변수 ANTHROPIC_API_KEY 또는 ANTHROPIC_KEY_FILE(기본 ~/.config/anthropic/.env)에서 읽고 출력하지 않는다. 호출마다 토큰과 시간만 기록한다.
 """
 
 from __future__ import annotations
@@ -56,7 +56,7 @@ SCHEMA = {"type": "object", "properties": {"items": {"type": "array", "items": I
 def client():
     if LOCAL_MODEL:
         return None
-    key = load_key("ANTHROPIC_API_KEY", Path.home() / ".config/kic-hanbaguni/.env")
+    key = load_key("ANTHROPIC_API_KEY", Path(os.environ.get("ANTHROPIC_KEY_FILE", str(Path.home() / ".config/anthropic/.env"))))
     return anthropic.Anthropic(api_key=key, max_retries=2, timeout=300.0)
 
 
