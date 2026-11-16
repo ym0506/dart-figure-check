@@ -1,11 +1,11 @@
-"""전체 실험 실행.
+"""전체 실험 실행. 표본은 DARTCHECK_SAMPLE(기본 sample=개발용 10곳, holdout=그다음 20곳)로 고른다.
 
-  .venv/bin/python -m dartcheck.fetch 10          # 표본 10곳 내려받기(DART 키 필요)
-  .venv/bin/python -m dartcheck.run parse         # 원문 읽기 점검: 정답 칸을 코드로 찾았는지
-  .venv/bin/python -m dartcheck.run recall        # 청킹 두 가지의 정답 행 recall@k (API 없음)
-  .venv/bin/python -m dartcheck.run llm [반복수]   # 방식 A·B로 LLM 추출(Anthropic 키 필요), 결과 저장
-  .venv/bin/python -m dartcheck.run score         # 저장된 LLM 결과 채점 + 오류 주입(API 없음)
-결과는 results/ 에 JSON과 요약 Markdown으로 남는다.
+  .venv/bin/python -m dartcheck.fetch 10 / 20 10 holdout   # 표본 내려받기(DART 키 필요)
+  .venv/bin/python -m dartcheck.run parse      # 정답 칸 찾기와 전기 칸 확인 → results/parse{_표본}.json
+  .venv/bin/python -m dartcheck.run inject     # 오류 주입(API 없음) → results/inject_gold{_표본}.json
+  .venv/bin/python -m dartcheck.run recall     # 덩어리 나누기별 정답 행 recall@k(API 없음) → results/recall{_표본}.json
+  .venv/bin/python -m dartcheck.run llm        # LLM 추출(DARTCHECK_MODES로 방식 선택) → results/llm_시각.json
+  .venv/bin/python -m dartcheck.run items      # LLM이 낸 값 하나하나 채점 → results/llm_items_summary.json
 """
 
 from __future__ import annotations
@@ -29,6 +29,12 @@ RAW = ROOT / "data" / "raw"
 RES = ROOT / "results"
 
 
+def suffix() -> str:
+    """표본별 결과 파일 꼬리. 개발용(sample)은 꼬리 없음, 그 밖에는 _이름(예: _holdout)."""
+    name = os.environ.get("DARTCHECK_SAMPLE", "sample")
+    return "" if name == "sample" else f"_{name}"
+
+
 def reports():
     # DARTCHECK_SAMPLE=holdout 이면 첫 10곳 다음 회사들(행 이름 목록을 만든 뒤 처음 보는 회사)로 돈다
     name = os.environ.get("DARTCHECK_SAMPLE", "sample")
@@ -37,12 +43,31 @@ def reports():
 
 
 def cmd_parse():
-    out = []
+    """정답 칸 찾기. 당기 칸은 공식 당기 금액으로 찾으므로 일치가 당연하고,
+    독립적으로 확인되는 것은 같은 행의 전기 칸(기간 열 판단)과 표 단위다."""
+    from decimal import Decimal
+    from .numbers import parse_number, same_amount
+    out, tot = [], Counter()
     for rep in reports():
-        n_cells = sum(len(v) for v in rep.gold_cells.values())
-        out.append({"corp": rep.corp_name, "tables": len(rep.tables), "gold_accounts": len(rep.gold),
-                    "found_cells": n_cells, "missing": [a for a in rep.gold if a not in rep.gold_cells]})
-        print(out[-1])
+        prev_ok = 0
+        for acct, cells in rep.gold_cells.items():
+            if "전기" in cells:
+                tid, r, c = cells["전기"]
+                t = rep.table(tid)
+                v = parse_number(t.grid[r][c])
+                prev_ok += v is not None and same_amount(v, t.unit, Decimal(rep.gold[acct]["전기"]))
+        row = {"corp": rep.corp_name, "tables": len(rep.tables), "accounts": len(rep.gold),
+               "found_accounts": len(rep.gold_cells), "prev_match": prev_ok,
+               "missing": [a for a in rep.gold if a not in rep.gold_cells]}
+        out.append(row)
+        tot["계정"] += row["accounts"]
+        tot["찾은 계정"] += row["found_accounts"]
+        tot["찾은 계정 중 전기도 공식 금액과 같음"] += prev_ok
+        print(row)
+    RES.mkdir(exist_ok=True)
+    (RES / f"parse{suffix()}.json").write_text(json.dumps({"total": dict(tot), "rows": out}, ensure_ascii=False,
+                                                          indent=1), encoding="utf-8")
+    print(dict(tot))
     return out
 
 
@@ -69,7 +94,7 @@ def cmd_recall(ks=(1, 3, 5, 10)):
     summary = {m: {k: f"{c[k]}/{total}" for k in ks} for m, c in res.items()}
     print(json.dumps(summary, ensure_ascii=False, indent=1))
     RES.mkdir(exist_ok=True)
-    (RES / "recall.json").write_text(json.dumps({"total": total, "recall": summary,
+    (RES / f"recall{suffix()}.json").write_text(json.dumps({"total": total, "recall": summary,
                                                  "note": "정답 행 = 요약재무정보나 연결재무제표에서 행 이름이 맞고 당기 칸이 공식 금액과 같은 행"},
                                                 ensure_ascii=False, indent=1), encoding="utf-8")
     return summary
@@ -77,12 +102,13 @@ def cmd_recall(ks=(1, 3, 5, 10)):
 
 def cmd_llm(repeat: int = 1, workers: int = int(os.environ.get("DARTCHECK_WORKERS", "6"))):
     from concurrent.futures import ThreadPoolExecutor
-    from .extract import client, extract_search, extract_whole
+    from .extract import client, extract_search, extract_statements, extract_whole
     cl = client()
     RES.mkdir(exist_ok=True)
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     modes = {
         "통째로": lambda rep: extract_whole(cl, rep),
+        "연결 본표": lambda rep: extract_statements(cl, rep),
         "검색 상위 5행(전체)": lambda rep: extract_search(cl, rep, 5, False),
         "검색 상위 5행(섹션 거름)": lambda rep: extract_search(cl, rep, 5, True),
     }
@@ -91,16 +117,28 @@ def cmd_llm(repeat: int = 1, workers: int = int(os.environ.get("DARTCHECK_WORKER
         modes = {m: f for m, f in modes.items() if m in only}
     tasks = [(rep, m, i) for rep in reports() for m in modes for i in range(repeat)]
 
+    def mem_free() -> int:
+        import re as _re
+        import subprocess
+        out = subprocess.run(["memory_pressure"], capture_output=True, text=True).stdout
+        m_ = _re.search(r"free percentage: (\d+)%", out)
+        return int(m_.group(1)) if m_ else 100
+
     def one(task):
         rep, m, i = task
+        free = mem_free()
+        if free < int(os.environ.get("DARTCHECK_MIN_FREE", "8")):
+            print("메모리 여유", free, "% 라 멈춤", flush=True)
+            return {"corp": rep.corp_name, "rcept_no": rep.rcept_no, "mode": m, "rep": i,
+                    "items": [], "usage": {"in": 0, "out": 0, "sec": 0, "usd": 0}, "error": f"skipped: memory {free}%"}
         try:
             items, usage = modes[m](rep)
             err = ""
         except Exception as e:  # noqa: BLE001 - 실패도 결과로 남긴다
             items, usage, err = [], {"in": 0, "out": 0, "sec": 0, "usd": 0}, f"{type(e).__name__}: {str(e)[:200]}"
-        print(rep.corp_name, m, i, usage, err, flush=True)
+        print(rep.corp_name, m, i, usage, err, len(items), flush=True)
         return {"corp": rep.corp_name, "rcept_no": rep.rcept_no, "mode": m, "rep": i,
-                "items": items, "usage": usage, "error": err}
+                "items": items, "usage": usage, "error": err, "sample": os.environ.get("DARTCHECK_SAMPLE", "sample")}
 
     from .extract import LOCAL_MODEL, MODEL
     p = RES / f"llm_{stamp}.json"
@@ -221,8 +259,67 @@ def cmd_inject():
         c["P2 이름 부분 비교 시 통과"] += r["p2_loose_wrong_pass"]
     out = {"sanity": dict(sanity), "injection": {k: dict(v) for k, v in summ.items()}}
     RES.mkdir(exist_ok=True)
-    (RES / "inject_gold.json").write_text(json.dumps({**out, "rows": rows}, ensure_ascii=False, indent=1),
+    (RES / f"inject_gold{suffix()}.json").write_text(json.dumps({**out, "rows": rows}, ensure_ascii=False, indent=1),
                                           encoding="utf-8")
+    print(json.dumps(out, ensure_ascii=False, indent=1))
+    return out
+
+
+def cmd_items(*paths: str):
+    """LLM이 낸 값 하나하나를 채점한다(같은 칸에 값을 여러 개 낸 경우도 모두 센다)."""
+    files = [Path(x) for x in paths] or sorted(RES.glob("llm_2*.json"))[-2:]
+    reps = {}
+    for name in ("sample", "holdout"):
+        os.environ["DARTCHECK_SAMPLE"] = name
+        try:
+            reps.update({r.rcept_no: r for r in reports()})
+        except FileNotFoundError:
+            pass
+    agg = Counter()
+    reasons = Counter()
+    cells = Counter()
+    per = []
+    secs = []
+    for f in files:
+        data = json.loads(f.read_text(encoding="utf-8"))
+        for run in data["runs"]:
+            if run.get("error"):
+                agg["오류로 빠진 회사"] += 1
+                continue
+            rep = reps[run["rcept_no"]]
+            chk = Checker(rep)
+            secs.append(run["usage"]["sec"])
+            covered = set()
+            for x in run["items"]:
+                acct, period = x.get("account"), x.get("period")
+                if not x.get("found") or acct not in rep.gold:
+                    continue
+                agg["낸 값"] += 1
+                raw = correct(rep, acct, period, chk.p1_value_won(x))
+                agg["맞는 값"] += raw
+                p1, _ = chk.p1(x)
+                agg["P1 받음"] += p1
+                agg["P1이 받은 틀린 값"] += p1 and not raw
+                p2, why, won = chk.p2(x, acct, period)
+                p2ok = p2 and correct(rep, acct, period, won)
+                agg["P2 받음"] += p2
+                agg["P2가 받은 틀린 값"] += p2 and not p2ok
+                agg["P2가 거부한 맞는 값"] += (not p2) and raw
+                agg["P1은 받고 P2만 거부한 맞는 값"] += p1 and raw and not p2
+                agg["P1은 받고 P2가 거른 틀린 값"] += p1 and not raw and not p2
+                if not raw:
+                    reasons[why or "P2 통과"] += 1
+                if p2ok:
+                    covered.add((acct, period))
+                per.append({"corp": rep.corp_name, "account": acct, "period": period, "value": x.get("value"),
+                            "raw_ok": raw, "p1": p1, "p2": p2, "p2_ok": p2ok, "why": why})
+            cells["회사"] += 1
+            cells["P2로 맞게 채운 칸"] += len(covered)
+            cells["전체 칸"] += 2 * len(rep.gold)
+    out = {"files": [f.name for f in files], "items": dict(agg), "wrong_value_reasons_by_P2": dict(reasons),
+           "cells": dict(cells), "sec_median": st.median(secs) if secs else None}
+    (RES / "llm_items_summary.json").write_text(json.dumps({**out, "rows": per}, ensure_ascii=False, indent=1),
+                                                encoding="utf-8")
     print(json.dumps(out, ensure_ascii=False, indent=1))
     return out
 
@@ -235,6 +332,8 @@ if __name__ == "__main__":
         cmd_recall()
     elif cmd == "llm":
         cmd_llm(int(sys.argv[2]) if len(sys.argv) > 2 else 1)
+    elif cmd == "items":
+        cmd_items(*sys.argv[2:])
     elif cmd == "inject":
         cmd_inject()
     elif cmd == "score":

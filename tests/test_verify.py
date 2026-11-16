@@ -79,3 +79,13 @@ def test_p1_sign():
     neg = {"row": "T0R3", "quote": line(r, "T0", 3), "value": "1,234", "unit": "백만원"}
     assert not chk.p1(neg)[0]                 # 부호를 보면 거부
     assert chk.p1(neg, signed=False)[0]       # 부호를 무시하면 통과
+
+
+def test_mutations_kinds():
+    from dartcheck.inject import mutations
+    r = rep()
+    ok = {"account": "매출액", "period": "당기", "row": "T0R1", "quote": line(r, "T0", 1), "value": "300,870", "unit": "백만원"}
+    kinds = {k for k, _ in mutations(r, ok)}
+    assert {"기간 바꿔치기", "연결 대신 별도", "같은 표의 다른 행", "단위 착오", "숫자 한 자리"} <= kinds
+    neg = {"account": "영업이익", "period": "당기", "row": "T0R3", "quote": line(r, "T0", 3), "value": "(1,234)", "unit": "백만원"}
+    assert "부호 빠짐" in {k for k, _ in mutations(r, neg)}

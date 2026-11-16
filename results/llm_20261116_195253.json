@@ -1,0 +1,1426 @@
+{
+ "model": "granite3.3:8b",
+ "repeat": 1,
+ "runs": [
+  {
+   "corp": "진양산업",
+   "rcept_no": "20260304001741",
+   "mode": "연결 본표",
+   "rep": 0,
+   "items": [],
+   "usage": {
+    "in": 4098,
+    "out": 2500,
+    "sec": 116.7,
+    "stop": "length",
+    "usd": 0.0,
+    "input_chars": 8513
+   },
+   "error": "",
+   "sample": "sample"
+  },
+  {
+   "corp": "대한유화",
+   "rcept_no": "20260305001191",
+   "mode": "연결 본표",
+   "rep": 0,
+   "items": [
+    {
+     "account": "매출액",
+     "period": "당기",
+     "found": true,
+     "row": "T64R1",
+     "quote": "3,347,821,791,902",
+     "value": "3,347,821,791,902",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T64R1",
+     "quote": "2,800,102,662,159",
+     "value": "2,800,102,662,159",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T64R1",
+     "quote": "2,499,972,627,941",
+     "value": "2,499,972,627,941",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "당기",
+     "found": true,
+     "row": "T64R2",
+     "quote": "3,227,283,794,765",
+     "value": "3,227,283,794,765",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T64R2",
+     "quote": "2,809,038,413,733",
+     "value": "2,809,038,413,733",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T64R2",
+     "quote": "2,511,571,765,377",
+     "value": "2,511,571,765,377",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "당기",
+     "found": true,
+     "row": "T64R5",
+     "quote": "52,668,902,480",
+     "value": "52,668,902,480",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T64R5",
+     "quote": "(59,892,625,042)",
+     "value": "-59,892,625,042",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T64R5",
+     "quote": "(62,321,327,716)",
+     "value": "-62,321,327,716",
+     "unit": "원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "당기",
+     "found": true,
+     "row": "T64R13",
+     "quote": "55,896,051,028",
+     "value": "55,896,051,028",
+     "unit": "원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "전기",
+     "found": true,
+     "row": "T64R13",
+     "quote": "(8,528,518,983)",
+     "value": "-8,528,518,983",
+     "unit": "원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "전기",
+     "found": true,
+     "row": "T64R13",
+     "quote": "(29,040,720,790)",
+     "value": "-29,040,720,790",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "당기",
+     "found": true,
+     "row": "T64R25",
+     "quote": "",
+     "value": "",
+     "unit": "원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "당기",
+     "found": true,
+     "row": "T64R25",
+     "quote": "",
+     "value": "",
+     "unit": "원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "당기",
+     "found": true,
+     "row": "T64R25",
+     "quote": "5,134.0",
+     "value": "5,134.0",
+     "unit": "원"
+    }
+   ],
+   "usage": {
+    "in": 5514,
+    "out": 1155,
+    "sec": 70.11,
+    "stop": "stop",
+    "usd": 0.0,
+    "input_chars": 5433
+   },
+   "error": "",
+   "sample": "sample"
+  },
+  {
+   "corp": "국도화학",
+   "rcept_no": "20260305001586",
+   "mode": "연결 본표",
+   "rep": 0,
+   "items": [
+    {
+     "account": "매출액",
+     "period": "당기",
+     "found": true,
+     "row": "T59R1",
+     "quote": "1,395,556,194,366",
+     "value": "1,395,556,194,366",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T59R1",
+     "quote": "1,305,775,130,486",
+     "value": "1,305,775,130,486",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T59R1",
+     "quote": "1,311,776,360,252",
+     "value": "1,311,776,360,252",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "당기",
+     "found": true,
+     "row": "T59R2",
+     "quote": "1,160,015,053,965",
+     "value": "1,160,015,053,965",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T59R2",
+     "quote": "1,092,404,981,934",
+     "value": "1,092,404,981,934",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T59R2",
+     "quote": "1,136,857,807,674",
+     "value": "1,136,857,807,674",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "당기",
+     "found": true,
+     "row": "T59R5",
+     "quote": "53,170,435,543",
+     "value": "53,170,435,543",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T59R5",
+     "quote": "25,333,558,032",
+     "value": "25,333,558,032",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T59R5",
+     "quote": "19,152,808,086",
+     "value": "19,152,808,086",
+     "unit": "원"
+    },
+    {
+     "account": "자산총계",
+     "period": "당기",
+     "found": true,
+     "row": "T57R18",
+     "quote": "1,749,499,133,148",
+     "value": "1,749,499,133,148",
+     "unit": "원"
+    },
+    {
+     "account": "자산총계",
+     "period": "전기",
+     "found": true,
+     "row": "T57R18",
+     "quote": "1,593,312,464,298",
+     "value": "1,593,312,464,298",
+     "unit": "원"
+    },
+    {
+     "account": "자산총계",
+     "period": "전기",
+     "found": true,
+     "row": "T57R18",
+     "quote": "1,509,561,242,743",
+     "value": "1,509,561,242,743",
+     "unit": "원"
+    },
+    {
+     "account": "부채총계",
+     "period": "당기",
+     "found": true,
+     "row": "T57R46",
+     "quote": "873,181,013,894",
+     "value": "873,181,013,894",
+     "unit": "원"
+    },
+    {
+     "account": "부채총계",
+     "period": "전기",
+     "found": true,
+     "row": "T57R46",
+     "quote": "739,488,447,502",
+     "value": "739,488,447,502",
+     "unit": "원"
+    },
+    {
+     "account": "부채총계",
+     "period": "전기",
+     "found": true,
+     "row": "T57R46",
+     "quote": "662,535,123,654",
+     "value": "662,535,123,654",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "당기",
+     "found": true,
+     "row": "T57R27",
+     "quote": "876,318,119,254",
+     "value": "876,318,119,254",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "전기",
+     "found": true,
+     "row": "T57R27",
+     "quote": "853,824,016,796",
+     "value": "853,824,016,796",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "전기",
+     "found": true,
+     "row": "T57R27",
+     "quote": "847,026,119,089",
+     "value": "847,026,119,089",
+     "unit": "원"
+    }
+   ],
+   "usage": {
+    "in": 5356,
+    "out": 1502,
+    "sec": 80.24,
+    "stop": "stop",
+    "usd": 0.0,
+    "input_chars": 5201
+   },
+   "error": "",
+   "sample": "sample"
+  },
+  {
+   "corp": "현대모비스",
+   "rcept_no": "20260309001878",
+   "mode": "연결 본표",
+   "rep": 0,
+   "items": [
+    {
+     "account": "매출액",
+     "period": "당기",
+     "found": true,
+     "row": "T69R1",
+     "quote": "61,118,127",
+     "value": "61,118,127",
+     "unit": "백만원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T69R1",
+     "quote": "57,236,995",
+     "value": "57,236,995",
+     "unit": "백만원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T69R1",
+     "quote": "59,254,361",
+     "value": "59,254,361",
+     "unit": "백만원"
+    },
+    {
+     "account": "매출액",
+     "period": "당기",
+     "found": true,
+     "row": "T69R2",
+     "quote": "52,288,206",
+     "value": "52,288,206",
+     "unit": "백만원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T69R2",
+     "quote": "49,174,367",
+     "value": "49,174,367",
+     "unit": "백만원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T69R2",
+     "quote": "52,492,187",
+     "value": "52,492,187",
+     "unit": "백만원"
+    },
+    {
+     "account": "영업이익",
+     "period": "당기",
+     "found": true,
+     "row": "T69R5",
+     "quote": "3,357,456",
+     "value": "3,357,456",
+     "unit": "백만원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T69R5",
+     "quote": "3,073,456",
+     "value": "3,073,456",
+     "unit": "백만원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T69R5",
+     "quote": "2,295,284",
+     "value": "2,295,284",
+     "unit": "백만원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "당기",
+     "found": true,
+     "row": "T69R13",
+     "quote": "3,664,736",
+     "value": "3,664,736",
+     "unit": "백만원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "전기",
+     "found": true,
+     "row": "T69R13",
+     "quote": "4,060,161",
+     "value": "4,060,161",
+     "unit": "백만원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "전기",
+     "found": true,
+     "row": "T69R13",
+     "quote": "3,423,309",
+     "value": "3,423,309",
+     "unit": "백만원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "당기",
+     "found": true,
+     "row": "T69R15",
+     "quote": "3,655,790",
+     "value": "3,655,790",
+     "unit": "백만원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "전기",
+     "found": true,
+     "row": "T69R15",
+     "quote": "4,055,642",
+     "value": "4,055,642",
+     "unit": "백만원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "전기",
+     "found": true,
+     "row": "T69R15",
+     "quote": "3,422,616",
+     "value": "3,422,616",
+     "unit": "백만원"
+    },
+    {
+     "account": "자본총계",
+     "period": "당기",
+     "found": true,
+     "row": "T67R18",
+     "quote": "70,400,532",
+     "value": "70,400,532",
+     "unit": "백만원"
+    },
+    {
+     "account": "자본총계",
+     "period": "전기",
+     "found": true,
+     "row": "T67R18",
+     "quote": "66,596,905",
+     "value": "66,596,905",
+     "unit": "백만원"
+    },
+    {
+     "account": "자본총계",
+     "period": "전기",
+     "found": true,
+     "row": "T67R18",
+     "quote": "58,585,845",
+     "value": "58,585,845",
+     "unit": "백만원"
+    }
+   ],
+   "usage": {
+    "in": 3730,
+    "out": 1328,
+    "sec": 54.77,
+    "stop": "stop",
+    "usd": 0.0,
+    "input_chars": 3573
+   },
+   "error": "",
+   "sample": "sample"
+  },
+  {
+   "corp": "케이씨씨",
+   "rcept_no": "20260309001896",
+   "mode": "연결 본표",
+   "rep": 0,
+   "items": [
+    {
+     "account": "매출액",
+     "period": "당기",
+     "found": true,
+     "row": "T142R1",
+     "quote": "6,483,819,486,096",
+     "value": "6,483,819,486,096",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T142R1",
+     "quote": "6,658,762,417,820",
+     "value": "6,658,762,417,820",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T142R1",
+     "quote": "6,288,442,613,717",
+     "value": "6,288,442,613,717",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "당기",
+     "found": true,
+     "row": "T142R2",
+     "quote": "4,846,349,852,975",
+     "value": "4,846,349,852,975",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T142R2",
+     "quote": "5,028,041,458,944",
+     "value": "5,028,041,458,944",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T142R2",
+     "quote": "4,959,942,844,934",
+     "value": "4,959,942,844,934",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "당기",
+     "found": true,
+     "row": "T142R5",
+     "quote": "427,615,116,299",
+     "value": "427,615,116,299",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T142R5",
+     "quote": "471,118,235,184",
+     "value": "471,118,235,184",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T142R5",
+     "quote": "312,530,203,929",
+     "value": "312,530,203,929",
+     "unit": "원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "당기",
+     "found": true,
+     "row": "T142R15",
+     "quote": "1,538,496,275,573",
+     "value": "1,538,496,275,573",
+     "unit": "원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "전기",
+     "found": true,
+     "row": "T142R15",
+     "quote": "326,550,559,850",
+     "value": "326,550,559,850",
+     "unit": "원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "전기",
+     "found": true,
+     "row": "T142R15",
+     "quote": "47,440,345,975",
+     "value": "47,440,345,975",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "당기",
+     "found": true,
+     "row": "T142R55",
+     "quote": "7,824,485,732,406",
+     "value": "7,824,485,732,406",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "전기",
+     "found": true,
+     "row": "T142R55",
+     "quote": "5,265,962,627,794",
+     "value": "5,265,962,627,794",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "전기",
+     "found": true,
+     "row": "T142R55",
+     "quote": "5,642,581,348,644",
+     "value": "5,642,581,348,644",
+     "unit": "원"
+    },
+    {
+     "account": "부채총계",
+     "period": "당기",
+     "found": true,
+     "row": "T142R6",
+     "quote": "16,803,559,405,446",
+     "value": "16,803,559,405,446",
+     "unit": "원"
+    },
+    {
+     "account": "부채총계",
+     "period": "전기",
+     "found": true,
+     "row": "T142R6",
+     "quote": "13,406,267,199,352",
+     "value": "13,406,267,199,352",
+     "unit": "원"
+    },
+    {
+     "account": "부채총계",
+     "period": "전기",
+     "found": true,
+     "row": "T142R6",
+     "quote": "13,615,116,188,796",
+     "value": "13,615,116,188,796",
+     "unit": "원"
+    }
+   ],
+   "usage": {
+    "in": 6746,
+    "out": 1708,
+    "sec": 96.2,
+    "stop": "stop",
+    "usd": 0.0,
+    "input_chars": 6655
+   },
+   "error": "",
+   "sample": "sample"
+  },
+  {
+   "corp": "삼성전자",
+   "rcept_no": "20260310002820",
+   "mode": "연결 본표",
+   "rep": 0,
+   "items": [
+    {
+     "account": "매출액",
+     "period": "당기",
+     "found": true,
+     "row": "T120R1",
+     "quote": "333,605,938",
+     "value": "333,605,938",
+     "unit": "백만원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T120R1",
+     "quote": "300,870,903",
+     "value": "300,870,903",
+     "unit": "백만원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T120R1",
+     "quote": "258,935,494",
+     "value": "258,935,494",
+     "unit": "백만원"
+    },
+    {
+     "account": "영업이익",
+     "period": "당기",
+     "found": true,
+     "row": "T120R5",
+     "quote": "43,601,051",
+     "value": "43,601,051",
+     "unit": "백만원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T120R5",
+     "quote": "32,725,961",
+     "value": "32,725,961",
+     "unit": "백만원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T120R5",
+     "quote": "6,566,976",
+     "value": "6,566,976",
+     "unit": "백만원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "당기",
+     "found": true,
+     "row": "T120R13",
+     "quote": "45,206,805",
+     "value": "45,206,805",
+     "unit": "백만원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "전기",
+     "found": true,
+     "row": "T120R13",
+     "quote": "34,451,351",
+     "value": "34,451,351",
+     "unit": "백만원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "전기",
+     "found": true,
+     "row": "T120R13",
+     "quote": "15,487,100",
+     "value": "15,487,100",
+     "unit": "백만원"
+    },
+    {
+     "account": "자산총계",
+     "period": "당기",
+     "found": true,
+     "row": "T118R22",
+     "quote": "566,942,110",
+     "value": "566,942,110",
+     "unit": "백만원"
+    },
+    {
+     "account": "자산총계",
+     "period": "전기",
+     "found": true,
+     "row": "T118R22",
+     "quote": "514,531,948",
+     "value": "514,531,948",
+     "unit": "백만원"
+    },
+    {
+     "account": "자산총계",
+     "period": "전기",
+     "found": true,
+     "row": "T118R22",
+     "quote": "455,905,980",
+     "value": "455,905,980",
+     "unit": "백만원"
+    },
+    {
+     "account": "부채총계",
+     "period": "당기",
+     "found": true,
+     "row": "T118R44",
+     "quote": "24,210,425",
+     "value": "24,210,425",
+     "unit": "백만원"
+    },
+    {
+     "account": "부채총계",
+     "period": "전기",
+     "found": true,
+     "row": "T118R44",
+     "quote": "19,013,579",
+     "value": "19,013,579",
+     "unit": "백만원"
+    },
+    {
+     "account": "부채총계",
+     "period": "전기",
+     "found": true,
+     "row": "T118R44",
+     "quote": "16,508,663",
+     "value": "16,508,663",
+     "unit": "백만원"
+    },
+    {
+     "account": "자본총계",
+     "period": "당기",
+     "found": true,
+     "row": "T118R54",
+     "quote": "436,320,337",
+     "value": "436,320,337",
+     "unit": "백만원"
+    },
+    {
+     "account": "자본총계",
+     "period": "전기",
+     "found": true,
+     "row": "T118R54",
+     "quote": "402,192,070",
+     "value": "402,192,070",
+     "unit": "백만원"
+    },
+    {
+     "account": "자본총계",
+     "period": "전기",
+     "found": true,
+     "row": "T118R54",
+     "quote": "363,677,865",
+     "value": "363,677,865",
+     "unit": "백만원"
+    }
+   ],
+   "usage": {
+    "in": 4646,
+    "out": 1389,
+    "sec": 72.42,
+    "stop": "stop",
+    "usd": 0.0,
+    "input_chars": 4559
+   },
+   "error": "",
+   "sample": "sample"
+  },
+  {
+   "corp": "하이스틸",
+   "rcept_no": "20260310002913",
+   "mode": "연결 본표",
+   "rep": 0,
+   "items": [
+    {
+     "account": "매출액",
+     "period": "당기",
+     "found": true,
+     "row": "T65R1",
+     "quote": "수익(매출액)",
+     "value": "256,623,288,696",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T65R1",
+     "quote": "수익(매출액)",
+     "value": "246,263,519,268",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T65R1",
+     "quote": "수익(매출액)",
+     "value": "256,655,946,687",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "당기",
+     "found": true,
+     "row": "T65R5",
+     "quote": "영업이익(손실)",
+     "value": "(3,324,575,453)",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T65R5",
+     "quote": "영업이익(손실)",
+     "value": "911,764,312",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T65R5",
+     "quote": "영업이익(손실)",
+     "value": "3,386,282,628",
+     "unit": "원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "당기",
+     "found": true,
+     "row": "T65R13",
+     "quote": "당기순이익(손실)",
+     "value": "(4,577,352,366)",
+     "unit": "원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "전기",
+     "found": true,
+     "row": "T65R13",
+     "quote": "당기순이익(손실)",
+     "value": "(1,104,636,147)",
+     "unit": "원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "전기",
+     "found": true,
+     "row": "T65R13",
+     "quote": "당기순이익(손실)",
+     "value": "1,306,918,155",
+     "unit": "원"
+    },
+    {
+     "account": "자산총계",
+     "period": "당기",
+     "found": true,
+     "row": "T63R19",
+     "quote": "자산총계",
+     "value": "261,285,238,949",
+     "unit": "원"
+    },
+    {
+     "account": "자산총계",
+     "period": "전기",
+     "found": true,
+     "row": "T63R19",
+     "quote": "자산총계",
+     "value": "267,487,698,093",
+     "unit": "원"
+    },
+    {
+     "account": "자산총계",
+     "period": "전기",
+     "found": true,
+     "row": "T63R19",
+     "quote": "자산총계",
+     "value": "270,448,865,007",
+     "unit": "원"
+    },
+    {
+     "account": "부채총계",
+     "period": "당기",
+     "found": true,
+     "row": "T63R36",
+     "quote": "부채총계",
+     "value": "117,559,955,932",
+     "unit": "원"
+    },
+    {
+     "account": "부채총계",
+     "period": "전기",
+     "found": true,
+     "row": "T63R36",
+     "quote": "부채총계",
+     "value": "119,467,669,590",
+     "unit": "원"
+    },
+    {
+     "account": "부채총계",
+     "period": "전기",
+     "found": true,
+     "row": "T63R36",
+     "quote": "부채총계",
+     "value": "121,222,358,101",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "당기",
+     "found": true,
+     "row": "T63R44",
+     "quote": "이익잉여금",
+     "value": "84,146,885,203",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "전기",
+     "found": true,
+     "row": "T63R44",
+     "quote": "이익잉여금",
+     "value": "88,807,728,823",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "전기",
+     "found": true,
+     "row": "T63R44",
+     "quote": "이익잉여금",
+     "value": "90,377,452,765",
+     "unit": "원"
+    }
+   ],
+   "usage": {
+    "in": 4735,
+    "out": 1503,
+    "sec": 76.06,
+    "stop": "stop",
+    "usd": 0.0,
+    "input_chars": 4584
+   },
+   "error": "",
+   "sample": "sample"
+  },
+  {
+   "corp": "유니드",
+   "rcept_no": "20260310002923",
+   "mode": "연결 본표",
+   "rep": 0,
+   "items": [
+    {
+     "account": "매출액",
+     "period": "당기",
+     "found": true,
+     "row": "T150R1",
+     "quote": "1,338,757,918,765",
+     "value": "1,338,757,918,765",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T150R1",
+     "quote": "1,111,631,182,007",
+     "value": "1,111,631,182,007",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T150R1",
+     "quote": "1,133,715,006,136",
+     "value": "1,133,715,006,136",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "당기",
+     "found": true,
+     "row": "T150R2",
+     "quote": "1,099,100,641,459",
+     "value": "1,099,100,641,459",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T150R2",
+     "quote": "876,469,328,969",
+     "value": "876,469,328,969",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T150R2",
+     "quote": "976,757,268,718",
+     "value": "976,757,268,718",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "당기",
+     "found": true,
+     "row": "T150R5",
+     "quote": "87,908,807,724",
+     "value": "87,908,807,724",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T150R5",
+     "quote": "95,444,584,358",
+     "value": "95,444,584,358",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T150R5",
+     "quote": "32,068,843,108",
+     "value": "32,068,843,108",
+     "unit": "원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "당기",
+     "found": true,
+     "row": "T150R13",
+     "quote": "65,259,133,113",
+     "value": "65,259,133,113",
+     "unit": "원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "전기",
+     "found": true,
+     "row": "T150R13",
+     "quote": "76,234,953,850",
+     "value": "76,234,953,850",
+     "unit": "원"
+    },
+    {
+     "account": "당기순이익",
+     "period": "전기",
+     "found": true,
+     "row": "T150R13",
+     "quote": "16,264,874,026",
+     "value": "16,264,874,026",
+     "unit": "원"
+    },
+    {
+     "account": "자산총계",
+     "period": "당기",
+     "found": true,
+     "row": "T16R26",
+     "quote": "1,523,789,829,869",
+     "value": "1,523,789,829,869",
+     "unit": "원"
+    },
+    {
+     "account": "자산총계",
+     "period": "전기",
+     "found": true,
+     "row": "T16R26",
+     "quote": "1,364,801,977,175",
+     "value": "1,364,801,977,175",
+     "unit": "원"
+    },
+    {
+     "account": "자산총계",
+     "period": "전기",
+     "found": true,
+     "row": "T16R26",
+     "quote": "1,259,135,784,421",
+     "value": "1,259,135,784,421",
+     "unit": "원"
+    }
+   ],
+   "usage": {
+    "in": 5797,
+    "out": 1251,
+    "sec": 72.99,
+    "stop": "stop",
+    "usd": 0.0,
+    "input_chars": 5627
+   },
+   "error": "",
+   "sample": "sample"
+  },
+  {
+   "corp": "삼성SDI",
+   "rcept_no": "20260310002954",
+   "mode": "연결 본표",
+   "rep": 0,
+   "items": [],
+   "usage": {
+    "in": 7404,
+    "out": 2500,
+    "sec": 133.08,
+    "stop": "length",
+    "usd": 0.0,
+    "input_chars": 7418
+   },
+   "error": "",
+   "sample": "sample"
+  },
+  {
+   "corp": "제일기획",
+   "rcept_no": "20260310002959",
+   "mode": "연결 본표",
+   "rep": 0,
+   "items": [
+    {
+     "account": "매출액",
+     "period": "당기",
+     "found": true,
+     "row": "T58R1",
+     "quote": "영업수익",
+     "value": "4,546,894,943,227",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "당기",
+     "found": true,
+     "row": "T58R1",
+     "quote": "전기",
+     "value": "4,344,256,680,956",
+     "unit": "원"
+    },
+    {
+     "account": "매출액",
+     "period": "전기",
+     "found": true,
+     "row": "T58R1",
+     "quote": "전기",
+     "value": "4,138,274,796,031",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "당기",
+     "found": true,
+     "row": "T58R5",
+     "quote": "영업이익",
+     "value": "336,889,964,137",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T58R5",
+     "quote": "영업이익",
+     "value": "320,720,587,990",
+     "unit": "원"
+    },
+    {
+     "account": "영업이익",
+     "period": "전기",
+     "found": true,
+     "row": "T58R5",
+     "quote": "영업이익",
+     "value": "307,522,766,415",
+     "unit": "원"
+    },
+    {
+     "account": "자산총계",
+     "period": "당기",
+     "found": true,
+     "row": "T56R26",
+     "quote": "자산총계",
+     "value": "3,587,816,549,320",
+     "unit": "원"
+    },
+    {
+     "account": "자산총계",
+     "period": "전기",
+     "found": true,
+     "row": "T56R26",
+     "quote": "자산총계",
+     "value": "3,306,550,192,963",
+     "unit": "원"
+    },
+    {
+     "account": "자산총계",
+     "period": "전기",
+     "found": true,
+     "row": "T56R26",
+     "quote": "자산총계",
+     "value": "2,889,504,607,291",
+     "unit": "원"
+    },
+    {
+     "account": "부채총계",
+     "period": "당기",
+     "found": true,
+     "row": "T56R45",
+     "quote": "부채총계",
+     "value": "1,999,766,713,965",
+     "unit": "원"
+    },
+    {
+     "account": "부채총계",
+     "period": "전기",
+     "found": true,
+     "row": "T56R45",
+     "quote": "부채총계",
+     "value": "1,832,516,799,814",
+     "unit": "원"
+    },
+    {
+     "account": "부채총계",
+     "period": "전기",
+     "found": true,
+     "row": "T56R45",
+     "quote": "부채총계",
+     "value": "1,591,740,851,472",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "당기",
+     "found": true,
+     "row": "T56R54",
+     "quote": "자본총계",
+     "value": "1,588,049,835,355",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "전기",
+     "found": true,
+     "row": "T56R54",
+     "quote": "자본총계",
+     "value": "1,474,033,393,149",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "전기",
+     "found": true,
+     "row": "T56R54",
+     "quote": "자본총계",
+     "value": "1,297,763,755,819",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "당기",
+     "found": true,
+     "row": "T58R13",
+     "quote": "당기순이익",
+     "value": "208,612,517,893",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "전기",
+     "found": true,
+     "row": "T58R13",
+     "quote": "당기순이익",
+     "value": "208,342,984,365",
+     "unit": "원"
+    },
+    {
+     "account": "자본총계",
+     "period": "전기",
+     "found": true,
+     "row": "T58R13",
+     "quote": "당기순이익",
+     "value": "190,121,613,120",
+     "unit": "원"
+    }
+   ],
+   "usage": {
+    "in": 6339,
+    "out": 1319,
+    "sec": 82.31,
+    "stop": "stop",
+    "usd": 0.0,
+    "input_chars": 6261
+   },
+   "error": "",
+   "sample": "sample"
+  }
+ ]
+}

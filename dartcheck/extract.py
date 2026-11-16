@@ -1,14 +1,17 @@
-"""LLM 추출. 모델은 Claude Haiku 5.5, 구조화 출력으로 형식을 고정한다. temperature는 보내지 않는다(받지 않는 모델).
+"""LLM 추출. Claude(기본 Haiku 5.5, 구조화 출력) 또는 로컬 모델(Ollama, DARTCHECK_LOCAL_MODEL)로 돈다. temperature는 Claude에 보내지 않는다.
 
-방식 A(통째로): '1. 요약재무정보'와 '2. 연결재무제표' 섹션의 표 전부를 한 번에 주고 6개 계정 x 당기·전기 12칸을 받는다.
-방식 B(검색): '재무에 관한 사항' 전체(주석, 별도 포함)를 행 단위로 쪼개 BM25 상위 5행만 주고 계정마다 따로 묻는다.
-키는 환경변수 ANTHROPIC_API_KEY 또는 ANTHROPIC_KEY_FILE(기본 ~/.config/anthropic/.env)에서 읽고 출력하지 않는다. 호출마다 토큰과 시간만 기록한다.
+방식(run.py의 DARTCHECK_MODES로 고름)
+- 통째로: 요약재무정보와 연결재무제표 섹션의 표 전부를 한 번에 주고 계정 6개 × 당기·전기 12칸을 받는다.
+- 연결 본표: 연결재무제표 중 재무상태표와 손익계산서처럼 대상 행이 있는 표만 준다(입력이 작아 로컬 모델도 돈다).
+- 검색 상위 5행(전체 / 섹션 거름): 행 단위 덩어리를 BM25로 골라 계정마다 묻는다.
+키는 환경변수 ANTHROPIC_API_KEY 또는 ANTHROPIC_KEY_FILE(기본 ~/.config/anthropic/.env)에서 읽고 출력하지 않는다.
 """
 
 from __future__ import annotations
 
 import json
 import os
+import re
 import time
 from pathlib import Path
 
@@ -68,7 +71,9 @@ def _call_local(user: str) -> tuple[list[dict], dict]:
     import urllib.request
     body = {"model": LOCAL_MODEL, "stream": False, "format": SCHEMA,
             "messages": [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}],
-            "options": {"num_ctx": 32768, "temperature": 0}}
+            "options": {"num_ctx": int(os.environ.get("DARTCHECK_NUM_CTX", "8192")), "temperature": 0,
+                         # 12칸 JSON은 1,100토큰 안팎. 작은 모델이 같은 말을 되풀이하며 끝없이 쓰는 걸 막는다
+                         "num_predict": int(os.environ.get("DARTCHECK_NUM_PREDICT", "2500"))}}
     t0 = time.monotonic()
     req = urllib.request.Request(OLLAMA + "/api/chat", data=json.dumps(body).encode(),
                                  headers={"Content-Type": "application/json"})
@@ -77,10 +82,20 @@ def _call_local(user: str) -> tuple[list[dict], dict]:
     sec = round(time.monotonic() - t0, 2)
     usage = {"in": data.get("prompt_eval_count", 0), "out": data.get("eval_count", 0), "sec": sec,
              "stop": data.get("done_reason", ""), "usd": 0.0}
+    text = data.get("message", {}).get("content", "")
     try:
-        items = json.loads(data["message"]["content"]).get("items", [])
-    except (KeyError, json.JSONDecodeError):
+        items = json.loads(text).get("items", [])
+    except json.JSONDecodeError:
+        # 출력 길이 상한에 걸려 JSON이 중간에 끊긴 경우: 끝까지 닫힌 항목만 살린다(살린 수를 기록)
         items = []
+        for m in re.finditer(r"\{[^{}]*\}", text):
+            try:
+                obj = json.loads(m.group(0))
+            except json.JSONDecodeError:
+                continue
+            if "account" in obj and "period" in obj:
+                items.append(obj)
+        usage["salvaged"] = len(items)
     return items, usage
 
 
@@ -114,6 +129,34 @@ def whole_input(rep: Report) -> str:
 def extract_whole(cl, rep: Report) -> tuple[list[dict], dict]:
     user = ("아래는 사업보고서 '재무에 관한 사항' 중 요약재무정보와 연결재무제표 표다. "
             f"계정 {', '.join(TARGETS)} 각각의 당기와 전기 값을 찾아 items에 12개를 넣어라.\n\n" + whole_input(rep))
+    items, usage = _call(cl, user)
+    usage["input_chars"] = len(user)
+    return items, usage
+
+
+def statement_input(rep: Report) -> str:
+    """연결재무제표 본표 중 대상 계정 행이 있는 표(재무상태표, 손익계산서 또는 포괄손익계산서)만. 입력을 작게 해 로컬 모델도 돌게 한다."""
+    from .docs import label_ok
+    from .parse import period_columns
+    keep = []
+    for t in rep.tables:
+        if not is_consolidated_statement(t) or not period_columns(t):
+            continue
+        if "현금흐름" in t.caption or "자본변동" in t.caption:
+            continue
+        # 현금흐름표·자본변동표에도 당기순이익 행이 있어서, 매출액·영업이익·총계 행이 있는 표만 남긴다
+        core = ("매출액", "영업이익", "자산총계", "부채총계", "자본총계")
+        if any(label_ok(a, t.row_label(r)) for a in core for r in range(t.header_rows, len(t.grid))):
+            keep.append(t)
+    lines = []
+    for t in keep:
+        lines.extend(render_table(t))
+    return "\n".join(lines)
+
+
+def extract_statements(cl, rep: Report) -> tuple[list[dict], dict]:
+    user = ("아래는 사업보고서 연결재무제표 본표다. "
+            f"계정 {', '.join(TARGETS)} 각각의 당기와 전기 값을 찾아 items에 12개를 넣어라.\n\n" + statement_input(rep))
     items, usage = _call(cl, user)
     usage["input_chars"] = len(user)
     return items, usage

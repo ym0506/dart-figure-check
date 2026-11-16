@@ -6,3 +6,5 @@ __pycache__/
 .env*
 data/raw/
 .DS_Store
+results/*.log
+results/llm_items_summary.json
