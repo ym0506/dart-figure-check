@@ -1,5 +1,57 @@
 # dart-figure-check
 
+English summary first. The full write-up in Korean follows below.
+
+## English summary
+
+An experiment on what to check before accepting a number that an LLM copies out of a financial table in a Korean annual report (DART filings).
+
+**Setup**
+
+- Ground truth is the official structured financial data from DART (OpenDART `fnlttSinglAcntAll`, consolidated, fiscal year 2025), not labels written by a person or a model.
+- Six accounts per company (revenue, operating income, net income, total assets, total liabilities, total equity), current and prior period, so 12 cells per company.
+- Sample: KOSPI annual reports filed in March 2026, taken in filing order. The first 10 companies that had all six accounts in the official data were used to build the checker. The next 20 were run only after the checker code and the row-name list were fixed.
+- Model: IBM Granite 3.3 8B run locally (Ollama, M2 Pro 16GB), one call per company on the consolidated balance sheet and income statement.
+
+**Two checks**
+
+- P1, quote check: the model's quote appears verbatim in a source line and contains the number.
+- P2, cell check: that line is in a consolidated statement table, the row name equals the account name, and the number in that period's column is the same. The amount is the cell number times the table's unit. The unit written by the model is not used.
+
+**Results** (`results/llm_items_*.json`)
+
+| | 10 development companies | 20 held-out companies | All 30 |
+|---|---|---|---|
+| Values the model produced (sometimes several per cell) | 138 | 336 | 474 |
+| Correct against official data | 67 | 164 | 231 |
+| Accepted by P1 / wrong among them | 100 / 52 | 154 / 86 | 254 / 138 |
+| Accepted by P2 / wrong among them | 44 / 0 | 66 / 0 | 110 / 0 |
+| Correct values P1 accepted and P2 rejected | 4 | 2 | 6 |
+| Cells filled correctly through P2 / all cells | 44 / 120 | 65 / 240 | 109 / 360 |
+
+Why P2 rejected the wrong values that P1 had accepted:
+
+| Reason | Development (52) | Held-out (86) |
+|---|---|---|
+| The number in that period's column is different (for example a figure from two years ago given as last year's) | 22 | 43 |
+| The row name is not the account (for example cost of sales given as revenue) | 21 | 38 |
+| The number is not in the row the quote points to | 7 | 5 |
+| No such table or row | 2 | 0 |
+
+Reading the source tables (`results/parse*.json`): given the official current-period amount, the parser located the row for 60 of 60 accounts in the development set and 119 of 120 in the held-out set. In every located row the prior-period cell also matched the official amount. The one miss is a row named "revenue and equity-method income", which is not in the exact-match name list.
+
+**Limits**
+
+- Zero wrong out of 110 accepted values is a small sample, not an error rate.
+- P2 filled 109 of 360 cells. The rest would still need a person.
+- The six accounts were chosen because code can check the answer. Notes, segment tables and quarterly reports were not tested, and P2's assumptions may break there.
+- One small local model, one call per company. A larger model may make different kinds of errors.
+- The error-injection result in section 3 below is a specification test: the function that builds the wrong answers and P2's check share the same logic, so P2's zero there is by design.
+
+DART calls use Treasurer's [opendart-py](https://github.com/TreasurerSquad/opendart-py) 0.1.0. To run it, see the commands under "실행" at the end.
+
+---
+
 DART 사업보고서 재무 표에서 LLM이 옮겨 적은 숫자를 받기 전에 무엇을 확인해야 하는지 재 본 실험입니다.
 
 **결과 (2026-11-16, 유가증권시장 사업보고서 30곳, 정답은 DART 공식 재무 데이터)**
