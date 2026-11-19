@@ -67,6 +67,44 @@ def row_chunks(tables: list[Table]) -> list[Chunk]:
     return out
 
 
+def row_chunks_short(tables: list[Table], head_chars: int = 300, row_chars: int = 600) -> list[Chunk]:
+    """행 단위 덩어리인데 머리글과 행을 정해진 글자 수에서 자른다.
+
+    임베딩 모델은 512토큰까지만 읽는다. row_chunks는 머리글이 긴 표에서 행이 그 뒤로 밀려 잘리므로,
+    임베딩 비교에서는 BM25와 임베딩 모두 이 덩어리를 쓴다.
+    """
+    out = []
+    for t in tables:
+        lines = render_table(t)
+        head = " / ".join(lines[1:1 + t.header_rows])[:head_chars]
+        for r in range(t.header_rows, len(t.grid)):
+            out.append(Chunk(f"{lines[0]}\n{head}\n{lines[1 + r][:row_chars]}", {(t.tid, r)}))
+    return out
+
+
+def row_chunks_label(tables: list[Table]) -> list[Chunk]:
+    """행 이름을 맨 앞에 두고 숫자 칸은 뺀 덩어리. 표 위치와 앞 문단은 뒤에 붙인다.
+
+    row_chunks_short는 같은 표의 행들이 머리글과 위치 글을 똑같이 갖고 있어 임베딩이 행을 구분하기 어렵다.
+    개발용 10곳에서 그 현상을 본 뒤 만든 표현이다.
+    """
+    out = []
+    for t in tables:
+        where = f"{t.path} / {t.caption[-60:]} / {(t.unit_text or '')[:60]}"
+        for r in range(t.header_rows, len(t.grid)):
+            out.append(Chunk(f"{t.row_label(r)}\n{where}", {(t.tid, r)}))
+    return out
+
+
+def rrf(orders: list[list[int]], k: int = 60) -> list[int]:
+    """순위 목록 여러 개를 Reciprocal Rank Fusion으로 합친다. 점수가 같으면 번호가 작은 쪽이 앞."""
+    score: dict[int, float] = {}
+    for order in orders:
+        for rank, i in enumerate(order):
+            score[i] = score.get(i, 0.0) + 1.0 / (k + rank + 1)
+    return sorted(score, key=lambda i: (-score[i], i))
+
+
 def fixed_chunks(tables: list[Table], size: int = 1000, overlap: int = 200) -> list[Chunk]:
     text, spans = [], []   # spans: (시작, 끝, tid, row)
     pos = 0

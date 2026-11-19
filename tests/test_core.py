@@ -56,3 +56,27 @@ def test_year_headers_and_words():
     assert a.unit == 1_000
     assert period_columns(a) == {"당기": 2, "전기": 1}     # 연도가 큰 열이 당기
     assert period_columns(b) == {"당기": 2, "전기": 1}     # '당기', '전기' 낱말
+
+
+def test_rrf_merges_two_rankings():
+    from dartcheck.retrieve import rrf
+    # 3은 두 목록 모두에서 앞쪽이라 1위, 한쪽에만 있는 9는 뒤로 간다
+    assert rrf([[3, 1, 2], [2, 3, 9]])[0] == 3
+    assert rrf([[3, 1, 2], [2, 3, 9]])[-1] in (1, 9)
+    # 점수가 같으면 번호가 작은 쪽이 앞
+    assert rrf([[5], [4]]) == [4, 5]
+
+
+def test_row_chunks_short_keeps_the_row_when_header_is_long():
+    from dartcheck.retrieve import row_chunks, row_chunks_short
+    tables = tables_with_context(build_tree(DOC))
+    t = next(x for x in tables if x.header_rows)
+    long_cell = "가" * 5000
+    t.grid[0][0] = long_cell
+    r = t.header_rows
+    label = t.grid[r][0]
+    full = next(c for c in row_chunks([t]) if (t.tid, r) in c.rows)
+    short = next(c for c in row_chunks_short([t]) if (t.tid, r) in c.rows)
+    assert len(full.text) > 5000
+    assert len(short.text) < 1200 and label in short.text.splitlines()[-1]
+    assert [c.rows for c in row_chunks([t])] == [c.rows for c in row_chunks_short([t])]
